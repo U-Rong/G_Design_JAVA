@@ -1,0 +1,413 @@
+package controller.loginnsignup;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Image;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
+
+import controller.conversation.ConversationUI;
+import dao.Impl.PrincesDaoImpl;
+import dao.UImethods.TextAnimator;
+import dao.UImethods.DisBlank_VerticalTextField;
+import dao.UImethods.DisBlank_VerticalNumericTextField;
+import model.Princes;
+import util.cal;
+
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class SignUpUI extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    
+
+    /**
+     * 啟動應用程序。
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    SignUpUI frame = new SignUpUI();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 創建框架。
+     */
+    public SignUpUI() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1280, 800);
+        setLocationRelativeTo(null);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+        
+        JLabel Suggest_Submit = new JLabel("點  擊  印  章  上  呈");
+        Suggest_Submit.setForeground(new Color(255, 255, 255, 100));
+        Suggest_Submit.setFont(new Font("新宋体", Font.BOLD, 75));
+        Suggest_Submit.setHorizontalAlignment(SwingConstants.CENTER);
+        Suggest_Submit.setBounds(0, 325, 1264, 286);
+        contentPane.add(Suggest_Submit);
+        Suggest_Submit.setVisible(false);
+        
+        JPanel Suggest_text = new JPanel();
+        Suggest_text.setBackground(new Color(0, 0, 0));
+        Suggest_text.setBounds(634, 11, 620, 131);
+        contentPane.add(Suggest_text);
+        Suggest_text.setLayout(null);
+        Suggest_text.setVisible(false);
+        
+        JLabel AvatarFrame = new JLabel("");
+        AvatarFrame.setHorizontalAlignment(SwingConstants.CENTER);
+        AvatarFrame.setBounds(-22, -25, 214, 220);
+        Suggest_text.add(AvatarFrame);
+        setScaledImage(AvatarFrame, "/controller/loginnsignup/gallery/AvatarFrame.png");
+        
+        JLabel Suggestion = new JLabel("");
+        Suggestion.setForeground(new Color(255, 255, 255));
+        Suggestion.setBounds(185, 0, 435, 131);
+        Suggest_text.add(Suggestion);
+        Suggestion.setFont(new Font("新宋体", Font.BOLD, 20));
+        Suggestion.setHorizontalAlignment(SwingConstants.LEFT);
+        
+        JLabel Suggester = new JLabel("");
+        Suggester.setBounds(0, 0, 159, 220);
+        Suggest_text.add(Suggester);
+        Suggester.setHorizontalAlignment(SwingConstants.CENTER);
+        setScaledImage(Suggester, "/controller/loginnsignup/gallery/Suggester.png");
+        
+        JLabel label = new JLabel("New label");
+        label.setBounds(0, 0, 46, 14);
+        Suggest_text.add(label);
+        
+        //蓋印章確認
+        JLabel SubmitInk = new JLabel("");
+        SubmitInk.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		ConversationUI csui = new ConversationUI();
+    			csui.setVisible(true);
+    			dispose();
+        	}
+        });
+        SubmitInk.setHorizontalAlignment(SwingConstants.CENTER);
+        SubmitInk.setBounds(315, 180, 600, 390);
+        contentPane.add(SubmitInk);
+        setScaledImage(SubmitInk, "/controller/loginnsignup/gallery/ink.png");
+        SubmitInk.setVisible(false);
+        
+        DisBlank_VerticalNumericTextField Troops_textfield = new DisBlank_VerticalNumericTextField();
+        Troops_textfield.setFont(new Font("標楷體", Font.BOLD, 25));
+        Troops_textfield.setColumns(10);
+        Troops_textfield.setBackground(new Color(255, 220, 185));
+        Troops_textfield.setBounds(240, 253, 30, 300);
+        contentPane.add(Troops_textfield);
+        Troops_textfield.setVisible(false);
+        
+        DisBlank_VerticalTextField Landgrave_textfield = new DisBlank_VerticalTextField();
+        Landgrave_textfield.setFont(new Font("標楷體", Font.BOLD, 25));
+        Landgrave_textfield.setColumns(10);
+        Landgrave_textfield.setBackground(new Color(255, 220, 185));
+        Landgrave_textfield.setBounds(463, 253, 30, 300);
+        contentPane.add(Landgrave_textfield);
+        Landgrave_textfield.setVisible(false);
+        
+        DisBlank_VerticalTextField Name_textfield = new DisBlank_VerticalTextField();
+        Name_textfield.setFont(new Font("標楷體", Font.BOLD, 25));
+        Name_textfield.setColumns(10);
+        Name_textfield.setBackground(new Color(255, 220, 185));
+        Name_textfield.setBounds(686, 253, 30, 300);
+        contentPane.add(Name_textfield);
+        Name_textfield.setVisible(false);
+
+        DisBlank_VerticalTextField Position_textfield = new DisBlank_VerticalTextField();
+        Position_textfield.setFont(new Font("標楷體", Font.BOLD, 25));
+        Position_textfield.setBackground(new Color(255, 220, 185));
+        Position_textfield.setBounds(914, 253, 30, 300);
+        contentPane.add(Position_textfield);
+        Position_textfield.setColumns(10);
+        Position_textfield.setVisible(false);
+
+        // 將Pos_title的文本更改為垂直格式
+        JLabel Position_title = new JLabel("<html>官<br>職<br></html>");
+        Position_title.setHorizontalAlignment(SwingConstants.CENTER);
+        Position_title.setForeground(new Color(153, 0, 4));
+        Position_title.setFont(new Font("標楷體", Font.BOLD, 30));
+        Position_title.setBounds(994, 200, 40, 150);
+        contentPane.add(Position_title);
+        Position_title.setVisible(false);
+
+        JLabel Name_title = new JLabel("<html>姓<br>名<br></html>");
+        Name_title.setHorizontalAlignment(SwingConstants.CENTER);
+        Name_title.setForeground(new Color(153, 0, 4));
+        Name_title.setFont(new Font("標楷體", Font.BOLD, 30));
+        Name_title.setBounds(775, 202, 40, 150);
+        contentPane.add(Name_title);
+        Name_title.setVisible(false);
+
+        JLabel Landgrave_title = new JLabel("<html>屬<br>地<br></html>");
+        Landgrave_title.setHorizontalAlignment(SwingConstants.CENTER);
+        Landgrave_title.setForeground(new Color(153, 0, 4));
+        Landgrave_title.setFont(new Font("標楷體", Font.BOLD, 30));
+        Landgrave_title.setBounds(550, 202, 40, 150);
+        contentPane.add(Landgrave_title);
+        Landgrave_title.setVisible(false);
+        
+        JLabel Troops_title = new JLabel("<html>兵<br>力<br></html>");
+        Troops_title.setHorizontalAlignment(SwingConstants.CENTER);
+        Troops_title.setForeground(new Color(153, 0, 4));
+        Troops_title.setFont(new Font("標楷體", Font.BOLD, 30));
+        Troops_title.setBounds(324, 202, 40, 150);
+        contentPane.add(Troops_title);
+        Troops_title.setVisible(false);
+        
+        JLabel SignUpList = new JLabel("");
+        SignUpList.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		if(!Position_textfield.getText().isEmpty() && !Name_textfield.getText().isEmpty() && !Landgrave_textfield.getText().isEmpty() && !Troops_textfield.getText().isEmpty())
+        		{
+        			String CheckName = Name_textfield.getText();
+            		Princes p = new PrincesDaoImpl().queryPrinces(CheckName);
+            		
+            		if(p != null)
+            		{
+            			
+            			Suggest_text.setVisible(true);
+            			TextAnimator Sug_animator1 = new TextAnimator(Suggestion, "這...大人，汝何故敢冒"+Name_textfield.getText()+"大人之身份也？",150, new Runnable() {
+            	            @Override
+            	            public void run() {
+            	                TextAnimator Sug_animator2 = new TextAnimator(Suggestion, "然吾深信汝之品行，絕不為此等不義之事。", 150, new Runnable() {
+            	                    @Override
+            	                    public void run() {
+            	                        TextAnimator Sug_animator3 = new TextAnimator(Suggestion, "吾再賜汝一份竹簡，請重新填寫...", 150, new Runnable() {
+            	                            @Override
+            	                            public void run() {
+            	                            	Position_textfield.setText("");
+            	                            	Name_textfield.setText("");
+            	                            	Landgrave_textfield.setText("");
+            	                            	//兵力field清不掉
+            	                            	Troops_textfield.setText("");
+            	                            	Suggest_text.setVisible(false);
+            	                            }
+            	                        });
+            	                        Sug_animator3.start();
+            	                    }
+            	                });
+            	                Sug_animator2.start();
+            	            }
+            	        });
+            			 Sug_animator1.start();
+            		}
+            		else
+            		{
+            			SubmitInk.setVisible(true);
+            			if(SubmitInk.isVisible())
+            			{
+            				//設定閃爍時間
+            		        Timer timer = new Timer(1000, new ActionListener() {
+            		        	private boolean visible = true;
+
+            					//切換JLabel的可視性
+            		        	@Override
+            					public void actionPerformed(ActionEvent e) {
+            						// TODO Auto-generated method stub
+            						visible = !visible;
+            						Suggest_Submit.setVisible(visible);
+            					}
+            		        });
+            		        timer.start();//啟動定時器
+            			}
+            			String Position = Position_textfield.getText();
+            			String Landgrave = Landgrave_textfield.getText();
+            			Integer Troops = Integer.parseInt(Troops_textfield.getText()); 
+            			
+            			Princes p_su = new Princes(Position,CheckName,Landgrave,Troops);
+            			new PrincesDaoImpl().addPrinces(p_su);//把這些內容add進去
+            			
+            			//儲存以供呼叫
+            			Princes p_txt = new PrincesDaoImpl().queryPrinces(Name_textfield.getText());
+            			cal.saveFile("Princes.txt",p_txt);
+            		}
+        		}
+        		else
+        		{
+        			Suggest_text.setVisible(true);
+        			TextAnimator Sug_animator1 = new TextAnimator(Suggestion, "這...這...大人...請勿戲弄我等識字之人。",150, new Runnable() {
+        	            @Override
+        	            public void run() {
+        	                TextAnimator Sug_animator2 = new TextAnimator(Suggestion, "若竹簡空無一字，吾等焉能辨識您的身份？", 150, new Runnable() {
+        	                    @Override
+        	                    public void run() {
+        	                        TextAnimator Sug_animator3 = new TextAnimator(Suggestion, "還請大人賜留尊名與官職，以便小人核對...", 150, new Runnable() {
+        	                            @Override
+        	                            public void run() {
+        	                            	Position_textfield.setText("");
+        	                            	Name_textfield.setText("");
+        	                            	Landgrave_textfield.setText("");
+        	                            	//兵力field清不掉
+        	                            	Troops_textfield.setText("");
+        	                            	Suggest_text.setVisible(false);
+        	                            }
+        	                        });
+        	                        Sug_animator3.start();
+        	                    }
+        	                });
+        	                Sug_animator2.start();
+        	            }
+        	        });
+        			 Sug_animator1.start();
+        		}
+        		
+        	}
+        });
+        SignUpList.setForeground(new Color(255, 0, 0));
+        SignUpList.setBounds(28, 94, 1200, 600);
+        contentPane.add(SignUpList);
+        setScaledImage(SignUpList, "/controller/loginnsignup/gallery/SignUppaper.png");
+        SignUpList.setVisible(false);
+
+        // NPC頭像設置
+        JLabel NPC = new JLabel("");
+        NPC.setIcon(new ImageIcon(ConversationUI.class.getResource("/controller/loginnsignup/gallery/田豐.png")));
+        NPC.setHorizontalAlignment(SwingConstants.CENTER);
+        NPC.setBounds(10, 461, 250, 300);
+        contentPane.add(NPC);
+
+        ImageIcon imageIcon = new ImageIcon(LoginUI.class.getResource("/controller/loginnsignup/gallery/田豐.png"));
+        int originalWidth = imageIcon.getIconWidth();
+        int originalHeight = imageIcon.getIconHeight();
+        double scaleFactor = Math.min(1.0 * NPC.getWidth() / originalWidth, 1.0 * NPC.getHeight() / originalHeight);
+        int scaledWidth = (int) (originalWidth * scaleFactor);
+        int scaledHeight = (int) (originalHeight * scaleFactor);
+        Image scaledImage = imageIcon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        NPC.setIcon(scaledIcon);
+        NPC.setVisible(true);
+        // =================================
+
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(0, 0, 0));
+        panel.setBounds(0, 622, 1264, 139);
+        contentPane.add(panel);
+        panel.setLayout(null);
+
+        JLabel NPC_Name = new JLabel("【田豐】");
+        NPC_Name.setFont(new Font("新宋体", Font.BOLD, 25));
+        NPC_Name.setHorizontalAlignment(SwingConstants.LEFT);
+        NPC_Name.setForeground(new Color(255, 255, 255));
+        NPC_Name.setBounds(254, 11, 114, 35);
+        panel.add(NPC_Name);
+
+        //問題:在這邊使用readfile會跑不了
+        Princes p = (Princes) (cal.readFile("princes.txt"));
+
+        // 按鈕選項(1)
+        JButton Choosen_1 = new JButton("在下願以所履官職，與君共享一二。");
+        Choosen_1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                NPC.setVisible(false);
+                panel.setVisible(false);
+                SignUpList.setVisible(true);
+                Position_title.setVisible(true);
+                Position_textfield.setVisible(true);
+                Name_title.setVisible(true);
+                Name_textfield.setVisible(true);
+                Landgrave_title.setVisible(true);
+                Landgrave_textfield.setVisible(true);
+                Troops_title.setVisible(true);
+                Troops_textfield.setVisible(true);
+                
+            }
+        });
+        Choosen_1.setHorizontalAlignment(SwingConstants.LEFT);
+        Choosen_1.setForeground(new Color(255, 255, 255));
+        Choosen_1.setFont(new Font("新宋体", Font.BOLD, 20));
+        Choosen_1.setBackground(new Color(0, 0, 0));
+        Choosen_1.setBounds(367, 22, 787, 59);
+        panel.add(Choosen_1);
+        Choosen_1.setVisible(false);
+
+        // 按鈕選項(2)
+        JButton Choosen_2 = new JButton("在下還有要事在身，改日再聊，告辭！");
+        Choosen_2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OpenMV omv = new OpenMV();
+                omv.setVisible(true);
+                dispose();
+            }
+        });
+        Choosen_2.setHorizontalAlignment(SwingConstants.LEFT);
+        Choosen_2.setForeground(Color.WHITE);
+        Choosen_2.setFont(new Font("新宋体", Font.BOLD, 20));
+        Choosen_2.setBackground(Color.BLACK);
+        Choosen_2.setBounds(367, 80, 787, 59);
+        panel.add(Choosen_2);
+        Choosen_2.setVisible(false);
+
+        // 文字對話互動
+        JLabel Conversation = new JLabel("");
+        Conversation.setForeground(new Color(255, 255, 255));
+        Conversation.setFont(new Font("新宋体", Font.BOLD, 20));
+        Conversation.setBounds(367, 35, 787, 93);
+        panel.add(Conversation);
+
+        TextAnimator animator1 = new TextAnimator(Conversation, "恕在下孤陋寡聞，未曾聽聞過閣下之大名...", 150, new Runnable() {
+            @Override
+            public void run() {
+                TextAnimator animator2 = new TextAnimator(Conversation, "雖未聽過閣下之名，然見閣下氣度非凡，定是有才之士...", 150, new Runnable() {
+                    @Override
+                    public void run() {
+                        TextAnimator animator3 = new TextAnimator(Conversation, "敢問閣下來自何處，或有何事跡可教我一二...?", 150, new Runnable() {
+                            @Override
+                            public void run() {
+                                Choosen_1.setVisible(true);
+                                Choosen_2.setVisible(true);
+                            }
+                        });
+                        animator3.start();
+                    }
+                });
+                animator2.start();
+            }
+        });
+
+        animator1.start();
+
+        JLabel BG = new JLabel("");
+        BG.setBounds(0, 0, 1264, 761);
+        contentPane.add(BG);
+        setScaledImage(BG, "/controller/loginnsignup/gallery/UIBG.jpg");
+    }
+
+    // 任意調整圖片比例
+    private void setScaledImage(JLabel label, String imagePath) {
+        ImageIcon icon = new ImageIcon(this.getClass().getResource(imagePath));
+        Image image = icon.getImage();
+        Image scaledImage = image.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
+        label.setIcon(new ImageIcon(scaledImage));
+    }
+}

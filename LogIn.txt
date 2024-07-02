@@ -1,0 +1,223 @@
+package controller.loginnsignup;
+
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.AbstractDocument;
+
+import controller.conversation.ConversationUI;
+import dao.Impl.PrincesDaoImpl;
+import dao.UImethods.ChineseCharacterFilter;
+import dao.UImethods.TextAnimator;
+import model.Princes;
+import util.cal;
+
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+public class LoginUI extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTextField signature;
+    private JLabel NPC;
+    private JLabel warn;
+    private JLabel ancientText1;
+    private JLabel ancientText2;
+    private JLabel ancientText3;
+    private JLabel NPC_Name;
+
+    /**
+     * 啟動。
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    LoginUI frame = new LoginUI();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 建立視窗框架。
+     */
+    public LoginUI() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1000, 500);
+        setLocationRelativeTo(null);
+        contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 0, 0));
+        contentPane.setForeground(new Color(0, 0, 0));
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        // 初始化NPC Label，但暫時不設置圖片
+        NPC = new JLabel("");
+        NPC.setHorizontalAlignment(SwingConstants.CENTER);
+        NPC.setBounds(776, 114, 187, 236);
+        contentPane.add(NPC);
+
+        // 初始化warn Label，但暫時不設置String。
+        warn = new JLabel("");
+        warn.setHorizontalAlignment(SwingConstants.CENTER);
+        warn.setFont(new Font("新宋体", Font.BOLD, 18));
+        warn.setForeground(new Color(255, 255, 255));
+        warn.setBounds(776, 383, 187, 27);
+        contentPane.add(warn);
+        
+                NPC_Name = new JLabel("");
+                NPC_Name.setForeground(new Color(255, 255, 255));
+                NPC_Name.setFont(new Font("新宋体", Font.BOLD, 20));
+                NPC_Name.setHorizontalAlignment(SwingConstants.CENTER);
+                NPC_Name.setBounds(775, 350, 187, 31);
+                NPC_Name.setVisible(false); // 初始时不可见
+                contentPane.add(NPC_Name);
+
+        // 背景GIF
+        JLabel BG = new JLabel("");
+        BG.setBounds(0, 0, 984, 362);
+        BG.setIcon(new ImageIcon(LoginUI.class.getResource("/controller/loginnsignup/gallery/LoginBG.gif")));
+        BG.setHorizontalAlignment(SwingConstants.CENTER);
+        contentPane.add(BG);
+
+        // 簽名處
+        signature = new JTextField();
+        //不需要 KeyListener，因為 JTextField 的 ActionListener 預設情況下會在按下 Enter 鍵觸發。
+        signature.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {               
+                //偵測輸入的名字是否已存在於SQL?
+                Princes p_txt = new PrincesDaoImpl().queryPrinces(signature.getText());
+                
+                boolean isRegistered = new PrincesDaoImpl().isNameRegistered(signature.getText());
+                if(isRegistered && p_txt !=null) {
+                    
+                    //存檔txt
+                	cal.saveFile("Princes.txt",p_txt);
+                    
+                    ConversationUI csUI = new ConversationUI();
+                    csUI.setVisible(true);
+                    dispose();
+                } else {
+                    SignUpUI suUI = new SignUpUI();
+                    suUI.setVisible(true);
+                    dispose();
+                }
+            }
+        });
+
+        signature.setHorizontalAlignment(SwingConstants.CENTER);
+        signature.setForeground(new Color(255, 0, 0));
+        signature.setFont(new Font("宋体", Font.BOLD, 20));
+        signature.setBackground(new Color(0, 0, 0));
+        signature.setBounds(776, 411, 187, 39);
+        signature.setVisible(false); // 初始時不可見
+        contentPane.add(signature);
+        signature.setColumns(10);
+
+        // 過濾中文以外的所有文字
+        ((AbstractDocument) signature.getDocument()).setDocumentFilter(new ChineseCharacterFilter());
+
+        // 初始化三個標籤，但暫時不設置文本
+        ancientText1 = new JLabel("");
+        ancientText1.setFont(new Font("新宋体", Font.BOLD, 20));
+        ancientText1.setHorizontalAlignment(SwingConstants.LEFT);
+        ancientText1.setForeground(new Color(255, 255, 255));
+        ancientText1.setBounds(10, 331, 454, 50);
+        contentPane.add(ancientText1);
+
+        ancientText2 = new JLabel("");
+        ancientText2.setHorizontalAlignment(SwingConstants.LEFT);
+        ancientText2.setForeground(Color.WHITE);
+        ancientText2.setFont(new Font("新宋体", Font.BOLD, 20));
+        ancientText2.setBounds(150, 370, 495, 52);
+        contentPane.add(ancientText2);
+
+        ancientText3 = new JLabel("");
+        ancientText3.setHorizontalAlignment(SwingConstants.LEFT);
+        ancientText3.setForeground(Color.WHITE);
+        ancientText3.setFont(new Font("新宋体", Font.BOLD, 20));
+        ancientText3.setBounds(385, 409, 343, 52);
+        contentPane.add(ancientText3);
+
+        // 設置文字動畫
+        TextAnimator animator1 = new TextAnimator(ancientText1, "卓既廢帝，自以功高，漸驕盈，專權自恣，", 100, new Runnable() {
+            @Override
+            public void run() {
+                TextAnimator animator2 = new TextAnimator(ancientText2, "群下患之。於是關東諸州郡同時舉兵。推袁紹為盟主，", 100, new Runnable() {
+                    @Override
+                    public void run() {
+                        TextAnimator animator3 = new TextAnimator(ancientText3, "進屯酸棗。卓乃挾天子西遷長安......", 100, new Runnable() {
+                            @Override
+                            public void run() {
+                                // 三段句子顯示完成後，顯示NPC的圖
+                                showNPC();
+                            }
+                        });
+                        animator3.start();
+                    }
+                });
+                animator2.start();
+            }
+        });
+
+        animator1.start();
+    }
+
+    // 顯示NPC並開始逐字顯示warn，完成後顯示signature
+    private void showNPC() {
+        // 載入NPC圖片
+        ImageIcon imageIcon = new ImageIcon(LoginUI.class.getResource("/controller/loginnsignup/gallery/田豐.png"));
+        int originalWidth = imageIcon.getIconWidth();
+        int originalHeight = imageIcon.getIconHeight();
+        double scaleFactor = Math.min(1.0 * NPC.getWidth() / originalWidth, 1.0 * NPC.getHeight() / originalHeight);
+        int scaledWidth = (int) (originalWidth * scaleFactor);
+        int scaledHeight = (int) (originalHeight * scaleFactor);
+        Image scaledImage = imageIcon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        NPC.setIcon(scaledIcon);
+        NPC.setVisible(true);
+
+        // 顯示NPC_Name
+        NPC_Name.setText("【田豐】"); // 設定你要顯示的NPC名字
+        NPC_Name.setVisible(true);
+
+        // 創建一個定時器，在顯示NPC_Name一段時間後顯示warn
+        Timer showWarnTimer = new Timer(100, new ActionListener() {
+            private int index = 0;
+            private String text = "敢問閣下尊姓大名？";
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (index < text.length()) {
+                    warn.setText(warn.getText() + text.charAt(index));
+                    index++;
+                } else {
+                    // 停止Timer並顯示signature
+                    ((Timer) e.getSource()).stop();
+                    signature.setVisible(true);
+                }
+            }
+        });
+        showWarnTimer.start();
+    }
+}

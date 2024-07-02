@@ -1,0 +1,539 @@
+package controller.conversation;
+
+import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import controller.loginnsignup.LoginUI;
+import dao.Impl.ArgumentDaoImpl;
+import dao.Impl.FeedbackDaoImpl;
+import dao.UImethods.TextAnimator;
+import model.Argument;
+import model.Feedback;
+import model.Princes;
+import util.cal;
+
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+import java.awt.Color;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+
+public class Argue_2 extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private final JPanel panel_3_4 = new JPanel();
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Argue_2 frame = new Argue_2();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public Argue_2() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1280, 800);
+		setLocationRelativeTo(null);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		//NPC頭像設置
+		JLabel NPC_2 = new JLabel("");
+		NPC_2.setIcon(new ImageIcon(Argue_2.class.getResource("/controller/loginnsignup/gallery/紀靈.png")));
+		NPC_2.setHorizontalAlignment(SwingConstants.CENTER);
+		NPC_2.setBounds(10, 461, 250, 300);
+		contentPane.add(NPC_2);
+						
+		ImageIcon imageIcon_M = new ImageIcon(LoginUI.class.getResource("/controller/loginnsignup/gallery/紀靈.png"));
+		int originalWidth_M = imageIcon_M.getIconWidth();
+		int originalHeight_M = imageIcon_M.getIconHeight();
+		double scaleFactor_M = Math.min(1.0 * NPC_2.getWidth() / originalWidth_M, 1.0 * NPC_2.getHeight() / originalHeight_M);
+		int scaledWidth_M = (int) (originalWidth_M * scaleFactor_M);
+		int scaledHeight_M = (int) (originalHeight_M * scaleFactor_M);
+		Image scaledImage_M = imageIcon_M.getImage().getScaledInstance(scaledWidth_M, scaledHeight_M, Image.SCALE_SMOOTH);
+		ImageIcon scaledIcon_M = new ImageIcon(scaledImage_M);
+		NPC_2.setIcon(scaledIcon_M);
+		NPC_2.setVisible(false);
+		
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		panel_3_4.setBackground(new Color(0, 0, 0));
+		panel_3_4.setForeground(new Color(0, 0, 0));
+		panel_3_4.setBounds(0, 553, 1264, 208);
+		contentPane.add(panel_3_4);
+		panel_3_4.setVisible(false);
+		
+		//NPC頭像設置
+		JLabel NPC_1 = new JLabel("");
+		NPC_1.setIcon(new ImageIcon(Argue_2.class.getResource("/controller/loginnsignup/gallery/袁術.png")));
+		NPC_1.setHorizontalAlignment(SwingConstants.CENTER);
+		NPC_1.setBounds(10, 461, 250, 300);
+		contentPane.add(NPC_1);
+		
+		ImageIcon imageIcon = new ImageIcon(LoginUI.class.getResource("/controller/loginnsignup/gallery/袁術.png"));
+        int originalWidth = imageIcon.getIconWidth();
+        int originalHeight = imageIcon.getIconHeight();
+        double scaleFactor = Math.min(1.0 * NPC_1.getWidth() / originalWidth, 1.0 * NPC_1.getHeight() / originalHeight);
+        int scaledWidth = (int) (originalWidth * scaleFactor);
+        int scaledHeight = (int) (originalHeight * scaleFactor);
+        Image scaledImage = imageIcon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        NPC_1.setIcon(scaledIcon);
+        NPC_1.setVisible(true);
+		//================================
+		
+        
+        JPanel panel_1_2 = new JPanel();
+		panel_1_2.setBackground(new Color(0, 0, 0));
+		panel_1_2.setBounds(0, 553, 1264, 208);
+		contentPane.add(panel_1_2);
+		panel_1_2.setLayout(null);
+		
+		//讀取先前儲存的txt，並調用裡面的內容。
+		Princes p_txt = (Princes)(cal.readFile("princes.txt"));
+		
+		
+		
+		JLabel Conversation_BG_M = new JLabel("");
+		Conversation_BG_M.setBounds(-222, 0, 1647, 761);
+		contentPane.add(Conversation_BG_M);
+		setScaledImage(Conversation_BG_M,"/controller/loginnsignup/gallery/ArgumentBG.png");
+		Conversation_BG_M.setVisible(false);
+
+		JLabel BG = new JLabel("");
+		BG.setBounds(0, 0, 1264, 761);
+		contentPane.add(BG);
+		setScaledImage(BG,"/controller/loginnsignup/gallery/ArgumentBG.png");
+		
+		// 按鈕選項(開場)
+        JButton Opening_Choosen = new JButton("");
+        Opening_Choosen.setBounds(367, 75, 887, 59);
+        panel_1_2.add(Opening_Choosen);
+        Opening_Choosen.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                
+            }
+        });
+        Opening_Choosen.setHorizontalAlignment(SwingConstants.LEFT);
+        Opening_Choosen.setForeground(Color.WHITE);
+        Opening_Choosen.setFont(new Font("新宋体", Font.BOLD, 20));
+        Opening_Choosen.setBackground(Color.BLACK);
+        Opening_Choosen.setVisible(true);
+		
+		 // 按鈕選項(1)
+        JButton Q_1_Choosen_1 = new JButton("");
+        Q_1_Choosen_1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	
+            }
+        });
+        Q_1_Choosen_1.setHorizontalAlignment(SwingConstants.LEFT);
+        Q_1_Choosen_1.setForeground(new Color(255, 255, 255));
+        Q_1_Choosen_1.setFont(new Font("新宋体", Font.BOLD, 20));
+        Q_1_Choosen_1.setBackground(new Color(0, 0, 0));
+        Q_1_Choosen_1.setBounds(367, 11, 887, 59);
+        panel_1_2.add(Q_1_Choosen_1);
+        Q_1_Choosen_1.setVisible(false);
+        
+     // 按鈕選項(2)
+        JButton Q_1_Choosen_2 = new JButton("");
+        Q_1_Choosen_2.setBounds(367, 75, 887, 59);
+        panel_1_2.add(Q_1_Choosen_2);
+        Q_1_Choosen_2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                
+            }
+        });
+        Q_1_Choosen_2.setHorizontalAlignment(SwingConstants.LEFT);
+        Q_1_Choosen_2.setForeground(Color.WHITE);
+        Q_1_Choosen_2.setFont(new Font("新宋体", Font.BOLD, 20));
+        Q_1_Choosen_2.setBackground(Color.BLACK);
+        Q_1_Choosen_2.setVisible(false);
+        
+     // 按鈕選項(3)
+        JButton Q_1_Choosen_3 = new JButton("");
+        Q_1_Choosen_3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                
+            }
+        });
+        Q_1_Choosen_3.setHorizontalAlignment(SwingConstants.LEFT);
+        Q_1_Choosen_3.setForeground(Color.WHITE);
+        Q_1_Choosen_3.setFont(new Font("新宋体", Font.BOLD, 20));
+        Q_1_Choosen_3.setBackground(Color.BLACK);
+        Q_1_Choosen_3.setBounds(367, 138, 887, 59);
+        panel_1_2.add(Q_1_Choosen_3);
+        Q_1_Choosen_3.setVisible(false);
+        
+     // 按鈕選項(轉場)
+        JButton Loading_Choosen = new JButton("");
+        Loading_Choosen.setBounds(367, 75, 887, 59);
+        panel_3_4.add(Loading_Choosen);
+        Loading_Choosen.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+        });
+        Loading_Choosen.setHorizontalAlignment(SwingConstants.LEFT);
+        Loading_Choosen.setForeground(Color.WHITE);
+        Loading_Choosen.setFont(new Font("新宋体", Font.BOLD, 20));
+        Loading_Choosen.setBackground(Color.BLACK);
+        Loading_Choosen.setVisible(false);
+        
+        // 按鈕選項(1)
+        JButton Q_2_Choosen_1 = new JButton("");
+        Q_2_Choosen_1.setBounds(367, 11, 887, 59);
+        panel_3_4.add(Q_2_Choosen_1);
+        Q_2_Choosen_1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+        });
+        Q_2_Choosen_1.setHorizontalAlignment(SwingConstants.LEFT);
+        Q_2_Choosen_1.setForeground(Color.WHITE);
+        Q_2_Choosen_1.setFont(new Font("新宋体", Font.BOLD, 20));
+        Q_2_Choosen_1.setBackground(Color.BLACK);
+        Q_2_Choosen_1.setVisible(false);
+        
+        // 按鈕選項(2)
+        JButton Q_2_Choosen_2 = new JButton("");
+        Q_2_Choosen_2.setBounds(367, 75, 887, 59);
+        panel_3_4.add(Q_2_Choosen_2);
+        Q_2_Choosen_2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+        });
+        Q_2_Choosen_2.setHorizontalAlignment(SwingConstants.LEFT);
+        Q_2_Choosen_2.setForeground(Color.WHITE);
+        Q_2_Choosen_2.setFont(new Font("新宋体", Font.BOLD, 20));
+        Q_2_Choosen_2.setBackground(Color.BLACK);
+        Q_2_Choosen_2.setVisible(false);
+        
+        // 按鈕選項(3)
+        JButton Q_2_Choosen_3 = new JButton("");
+        Q_2_Choosen_3.setBounds(367, 138, 887, 59);
+        panel_3_4.add(Q_2_Choosen_3);
+        Q_2_Choosen_3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+        });
+        Q_2_Choosen_3.setHorizontalAlignment(SwingConstants.LEFT);
+        Q_2_Choosen_3.setForeground(Color.WHITE);
+        Q_2_Choosen_3.setFont(new Font("新宋体", Font.BOLD, 20));
+        Q_2_Choosen_3.setBackground(Color.BLACK);
+        Q_2_Choosen_3.setVisible(false);
+        
+        Random rand = new Random();
+        int a1_sql = rand.nextInt(30)+1;
+        int a2_sql = rand.nextInt(30)+1;
+        
+      //SQL大型資料庫全注入
+        Argument a1 = new ArgumentDaoImpl().queryArgumentByNumber(a1_sql);
+        Argument a2 = new ArgumentDaoImpl().queryArgumentByNumber(a2_sql);
+      
+      		
+        Feedback f1 = new FeedbackDaoImpl().queryFeedbackByNumber(a1_sql);
+        Feedback f2 = new FeedbackDaoImpl().queryFeedbackByNumber(a2_sql);
+      
+        
+        //文字對話互動
+        JLabel Conversation_2 = new JLabel("");
+        Conversation_2.setForeground(new Color(255, 255, 255));
+        Conversation_2.setFont(new Font("新宋体", Font.BOLD, 20));
+        Conversation_2.setBounds(367, 35, 887, 162);
+        panel_3_4.add(Conversation_2);
+        
+        
+        
+                
+        //紀靈提問
+        Loading_Choosen.setVisible(true);
+        Loading_Choosen.setText("(行禮)"+p_txt.getJ_Position() + p_txt.getJ_Name() + "，末將紀靈，粗鄙武夫，冒昧請教戰略，深感不安，望賜教。");
+        Loading_Choosen.addMouseListener(new MouseAdapter() {
+			@Override
+        	public void mouseClicked(MouseEvent e) {
+				Loading_Choosen.setVisible(false);
+				TextAnimator animator2 = new TextAnimator(Conversation_2, "末將想請教" + p_txt.getJ_Position() + "大人..." + a2.getA_Question(), 200, new Runnable() {
+		            @Override
+		            public void run() {
+		            	Q_2_Choosen_1.setVisible(true);
+		                Q_2_Choosen_2.setVisible(true);
+		                Q_2_Choosen_3.setVisible(true);
+		                Q_2_Choosen_1.setText(a2.getA_Option1());
+		                Q_2_Choosen_2.setText(a2.getA_Option2());
+		                Q_2_Choosen_3.setText(a2.getA_Option3());
+		                Conversation_2.setText("");
+		                
+		                //按下按鈕1後
+		                Q_2_Choosen_1.addMouseListener(new MouseAdapter() {
+		                    @Override
+		                    public void mouseClicked(MouseEvent e) {
+		                    	
+		                    	//得分計算
+		                    	Integer N4 =+ rand.nextInt(5)+5;
+		                    	cal.saveFile("N4.txt", N4);
+		                    	
+		                    	//選擇->按鈕消失->繼續播放文字
+		                    	Q_2_Choosen_1.setVisible(false);
+		                        Q_2_Choosen_2.setVisible(false);
+		                        Q_2_Choosen_3.setVisible(false);
+		                        
+		                        TextAnimator feedback_2 = new TextAnimator(Conversation_2, "果然是" + p_txt.getJ_Position() + "..." + f2.getF_Feedback_1() ,200, new Runnable() {
+		                        	@Override
+		        					public void run() {
+		        						Argue_3 ag3 = new Argue_3();
+		        						ag3.setVisible(true);
+		        						dispose();
+		        					}
+		                        	
+		                        });
+		                        feedback_2.start();
+		                    }
+		                });
+		                
+		                //按下按鈕2後
+		                Q_2_Choosen_2.addMouseListener(new MouseAdapter() {
+		                    @Override
+		                    public void mouseClicked(MouseEvent e) {
+		                    	
+		                    	//得分計算
+		                    	Integer N4 =+ rand.nextInt(2)+6;
+		                    	cal.saveFile("N4.txt", N4);
+		                    	
+		                    	//選擇->按鈕消失->繼續播放文字
+		                    	Q_2_Choosen_1.setVisible(false);
+		                        Q_2_Choosen_2.setVisible(false);
+		                        Q_2_Choosen_3.setVisible(false);
+		                        
+		                        TextAnimator feedback_2 = new TextAnimator(Conversation_2, "末將受教了..." + f2.getF_Feedback_2() ,200, new Runnable() {
+		                        	@Override
+		        					public void run() {
+		        						Argue_3 ag3 = new Argue_3();
+		        						ag3.setVisible(true);
+		        						dispose();
+		        					}
+		                        	
+		                        });
+		                        feedback_2.start();
+		                    }
+		                });
+		                
+		                //按下按鈕3後
+		                Q_2_Choosen_3.addMouseListener(new MouseAdapter() {
+		                    @Override
+		                    public void mouseClicked(MouseEvent e) {
+		                    	
+		                    	//得分計算
+		                    	Integer N4 =+ rand.nextInt(10)+1;
+		                    	cal.saveFile("N4.txt", N4);
+		                    	
+		                    	//選擇->按鈕消失->繼續播放文字
+		                    	Q_2_Choosen_1.setVisible(false);
+		                        Q_2_Choosen_2.setVisible(false);
+		                        Q_2_Choosen_3.setVisible(false);
+		                        
+		                        TextAnimator feedback_2 = new TextAnimator(Conversation_2, f2.getF_Feedback_3() ,200, new Runnable() {
+		                        	@Override
+		        					public void run() {
+		        						Argue_3 ag3 = new Argue_3();
+		        						ag3.setVisible(true);
+		        						dispose();
+		        					}
+		                        	
+		                        });
+		                        feedback_2.start();
+		                    }
+		                });
+		            }
+		        });
+		        animator2.start();
+			};
+        });
+		
+		
+        
+             
+        
+        
+		//開場文字對話互動
+		JLabel Conversation_1 = new JLabel("");
+		Conversation_1.setForeground(new Color(255, 255, 255));
+		Conversation_1.setFont(new Font("新宋体", Font.BOLD, 20));
+		Conversation_1.setBounds(367, 35, 887, 162);
+		panel_1_2.add(Conversation_1);
+		
+		//袁術提問
+		Opening_Choosen.setText("(起身，環顧眾人...)吾乃後將軍袁術，有一議困擾已久，願請"+p_txt.getJ_Position() + p_txt.getJ_Name() +"賜教。");
+		Opening_Choosen.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	Opening_Choosen.setVisible(false);
+            	TextAnimator animator1 = new TextAnimator(Conversation_1, "公路有一事相詢，" + a1.getA_Question() + "望" + p_txt.getJ_Position() + "賜教...", 200, new Runnable() {
+    	            @Override
+    	            public void run() {
+    	            	Q_1_Choosen_1.setVisible(true);
+                        Q_1_Choosen_2.setVisible(true);
+                        Q_1_Choosen_3.setVisible(true);
+                        Q_1_Choosen_1.setText(a1.getA_Option1());
+                        Q_1_Choosen_2.setText(a1.getA_Option2());
+                        Q_1_Choosen_3.setText(a1.getA_Option3());
+                        Conversation_1.setText("");
+                        //按下按鈕後
+                        
+                        //選1
+                        Q_1_Choosen_1.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                            	
+                            	//得分計算
+    	                    	int N3 =+ rand.nextInt(5)+5;
+    	                    	cal.saveFile("N3.txt", N3);
+                            	
+                            	//選擇->按鈕消失->繼續播放文字
+                            	Q_1_Choosen_1.setVisible(false);
+                                Q_1_Choosen_2.setVisible(false);
+                                Q_1_Choosen_3.setVisible(false);
+                            	
+                                TextAnimator feedback_1 = new TextAnimator(Conversation_1, "不錯呢..." + f1.getF_Feedback_1() ,200, new Runnable() {
+            	                    @Override
+            	                    public void run() {
+            	                    	panel_1_2.setVisible(false);
+            	                    	NPC_1.setVisible(false);
+            	                    	panel_3_4.setVisible(true);
+            	                    	NPC_2.setVisible(true);
+            	                    }
+            	                });
+            	                feedback_1.start();
+                            };
+                        });
+                        
+                      //選2
+                        Q_1_Choosen_2.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                            	
+                            	//得分計算
+    	                    	int N3 =+ rand.nextInt(2)+6;
+    	                    	cal.saveFile("N3.txt", N3);
+                            	
+                            	//選擇->按鈕消失->繼續播放文字
+                            	Q_1_Choosen_1.setVisible(false);
+                                Q_1_Choosen_2.setVisible(false);
+                                Q_1_Choosen_3.setVisible(false);
+                            	
+                                TextAnimator feedback_1 = new TextAnimator(Conversation_1, "呵呵呵..." + f1.getF_Feedback_2() ,200, new Runnable() {
+            	                    @Override
+            	                    public void run() {
+            	                    	panel_1_2.setVisible(false);
+            	                    	NPC_1.setVisible(false);
+            	                    	panel_3_4.setVisible(true);
+            	                    	NPC_2.setVisible(true);
+            	                    }
+            	                });
+            	                feedback_1.start();
+                            };
+                        });
+                        
+                      //選3
+                        Q_1_Choosen_3.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                            	
+                            	//得分計算
+    	                    	int N3 =+ rand.nextInt(10)+1;
+    	                    	cal.saveFile("N3.txt", N3);
+                            	
+                            	//選擇->按鈕消失->繼續播放文字
+                            	Q_1_Choosen_1.setVisible(false);
+                                Q_1_Choosen_2.setVisible(false);
+                                Q_1_Choosen_3.setVisible(false);
+                            	
+                                TextAnimator feedback_1 = new TextAnimator(Conversation_1, f1.getF_Feedback_3() ,200, new Runnable() {
+            	                    @Override
+            	                    public void run() {
+            	                    	panel_1_2.setVisible(false);
+            	                    	NPC_1.setVisible(false);
+            	                    	panel_3_4.setVisible(true);
+            	                    	NPC_2.setVisible(true);
+            	                    }
+            	                });
+            	                feedback_1.start();
+                            };
+                        });
+    	            }
+    	        });
+    	        animator1.start();
+            }
+        }); 
+		
+		
+	    panel_3_4.setLayout(null);
+	    
+		
+	    JLabel 紀靈name = new JLabel("【紀靈】");
+	    紀靈name.setFont(new Font("新宋体", Font.BOLD, 25));
+	    紀靈name.setHorizontalAlignment(SwingConstants.LEFT);
+	    紀靈name.setForeground(new Color(255, 255, 255));
+	    紀靈name.setBounds(254, 11, 111, 35);
+		panel_3_4.add(紀靈name);
+		
+        
+	        
+		JLabel 袁術name = new JLabel("【袁術】");
+		袁術name.setFont(new Font("新宋体", Font.BOLD, 25));
+		袁術name.setHorizontalAlignment(SwingConstants.LEFT);
+		袁術name.setForeground(new Color(255, 255, 255));
+		袁術name.setBounds(254, 11, 111, 35);
+		panel_1_2.add(袁術name);
+		
+		        
+		
+		}
+	
+		public Argue_2(int n12, int n22) {
+		// TODO Auto-generated constructor stub
+	}
+
+		private void Argue_2(int n12, int n22) {
+		// TODO Auto-generated method stub
+		
+	}
+
+		//任意調整圖片比例
+		private void setScaledImage(JLabel label, String imagePath) {
+		ImageIcon icon = new ImageIcon(this.getClass().getResource(imagePath));
+	 	Image image = icon.getImage();
+	 	Image scaledImage = image.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
+	 	label.setIcon(new ImageIcon(scaledImage));
+		}
+	}
+
+

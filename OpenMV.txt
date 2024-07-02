@@ -1,0 +1,141 @@
+package controller.loginnsignup;
+
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.ImageIcon;
+import java.awt.image.ImageObserver;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Font;
+import java.awt.Color;
+
+public class OpenMV extends JFrame implements ImageObserver {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private Image gifImage;
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    OpenMV frame = new OpenMV();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Create the frame.
+     */
+    @SuppressWarnings("serial")
+	public OpenMV() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1000, 500);
+        setTitle("Three_Kingdom");
+        // 畫面置中
+        setLocationRelativeTo(null);
+        contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 0, 0));
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        // 創建並設置 JLabel 來顯示 GIF
+        JLabel lblNewLabel = new JLabel("");
+        lblNewLabel.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		LoginUI login=new LoginUI();
+        		login.setVisible(true);
+        		dispose();
+        	}
+        });
+        
+        //提示跳過影片
+        JLabel pts = new JLabel("點  擊  螢  幕  跳  過  動  畫");
+        pts.setForeground(new Color(255, 255, 255, 50));
+        pts.setHorizontalAlignment(SwingConstants.CENTER);
+        pts.setFont(new Font("新宋体", Font.BOLD, 40));
+        pts.setBounds(10, 330, 964, 91);
+        contentPane.add(pts);
+        
+        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNewLabel.setBounds(0, 0, 984, 461);
+        contentPane.add(lblNewLabel);
+
+        //設定閃爍時間
+        Timer timer = new Timer(600, new ActionListener() {
+        	private boolean visible = true;
+
+			//切換JLabel的可視性
+        	@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				visible = !visible;
+				pts.setVisible(visible);
+			}
+        });
+        timer.start();//啟動定時器
+        
+        // 加載 GIF 圖片
+        ImageIcon gifIcon = new ImageIcon(OpenMV.class.getResource("gallery/OpenMV.gif"));
+        lblNewLabel.setIcon(gifIcon);
+
+        // 獲取 GIF 圖像
+        gifImage = gifIcon.getImage();
+
+        // 重寫 paint 方法來監測 GIF 的狀態
+        lblNewLabel.setIcon(new ImageIcon(gifImage) {
+            @Override
+            public void paintIcon(Component c, Graphics g, int x, int y) {
+                super.paintIcon(c, g, x, y);
+                gifImage.getWidth(OpenMV.this); // 通知 OpenMV 來觀察圖像變化
+            }
+        });
+ 
+    }
+
+    
+    
+    //失效
+    @Override
+    public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+        // 檢查是否到達最後一幀
+        if ((infoflags & ALLBITS) != 0) {
+            // GIF 播放完成後切換到另一個 JFrame
+            switchToAnotherFrame();
+            return false; // 停止監測
+        }
+        else
+        {
+        	return true; // 繼續監測
+        }
+        
+    }
+    // 在 GIF 播放完畢後切換到另一個 JFrame
+    private void switchToAnotherFrame() {
+        // 關閉當前的 JFrame
+        this.dispose();
+
+        // 創建並顯示新的 JFrame
+        LoginUI login = new LoginUI();
+        login.setVisible(true);
+    }
+}

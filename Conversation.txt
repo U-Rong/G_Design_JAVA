@@ -1,0 +1,322 @@
+package controller.conversation;
+
+import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import controller.loginnsignup.LoginUI;
+import controller.loginnsignup.OpenMV;
+import dao.UImethods.TextAnimator;
+import model.Princes;
+import util.cal;
+
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+import java.awt.Color;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+
+public class ConversationUI extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private final JPanel panel_M = new JPanel();
+	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ConversationUI frame = new ConversationUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public ConversationUI() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1280, 800);
+		setLocationRelativeTo(null);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		//NPC頭像設置
+		JLabel NPC_M = new JLabel("");
+		NPC_M.setIcon(new ImageIcon(ConversationUI.class.getResource("/controller/loginnsignup/gallery/袁紹.png")));
+		NPC_M.setHorizontalAlignment(SwingConstants.CENTER);
+		NPC_M.setBounds(10, 461, 250, 300);
+		contentPane.add(NPC_M);
+						
+		ImageIcon imageIcon_M = new ImageIcon(LoginUI.class.getResource("/controller/loginnsignup/gallery/袁紹.png"));
+		int originalWidth_M = imageIcon_M.getIconWidth();
+		int originalHeight_M = imageIcon_M.getIconHeight();
+		double scaleFactor_M = Math.min(1.0 * NPC_M.getWidth() / originalWidth_M, 1.0 * NPC_M.getHeight() / originalHeight_M);
+		int scaledWidth_M = (int) (originalWidth_M * scaleFactor_M);
+		int scaledHeight_M = (int) (originalHeight_M * scaleFactor_M);
+		Image scaledImage_M = imageIcon_M.getImage().getScaledInstance(scaledWidth_M, scaledHeight_M, Image.SCALE_SMOOTH);
+		ImageIcon scaledIcon_M = new ImageIcon(scaledImage_M);
+		NPC_M.setIcon(scaledIcon_M);
+		NPC_M.setVisible(false);
+		
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		panel_M.setBackground(new Color(0, 0, 0));
+		panel_M.setForeground(new Color(0, 0, 0));
+		panel_M.setBounds(0, 622, 1264, 139);
+		contentPane.add(panel_M);
+		panel_M.setVisible(false);
+		
+		//NPC頭像設置
+		JLabel NPC = new JLabel("");
+		NPC.setIcon(new ImageIcon(ConversationUI.class.getResource("/controller/loginnsignup/gallery/田豐.png")));
+		NPC.setHorizontalAlignment(SwingConstants.CENTER);
+		NPC.setBounds(10, 461, 250, 300);
+		contentPane.add(NPC);
+		
+		ImageIcon imageIcon = new ImageIcon(LoginUI.class.getResource("/controller/loginnsignup/gallery/田豐.png"));
+        int originalWidth = imageIcon.getIconWidth();
+        int originalHeight = imageIcon.getIconHeight();
+        double scaleFactor = Math.min(1.0 * NPC.getWidth() / originalWidth, 1.0 * NPC.getHeight() / originalHeight);
+        int scaledWidth = (int) (originalWidth * scaleFactor);
+        int scaledHeight = (int) (originalHeight * scaleFactor);
+        Image scaledImage = imageIcon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        NPC.setIcon(scaledIcon);
+        NPC.setVisible(true);
+		//================================
+		
+        
+        JPanel panel = new JPanel();
+		panel.setBackground(new Color(0, 0, 0));
+		panel.setBounds(0, 622, 1264, 139);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		//讀取先前儲存的txt，並調用裡面的內容。
+		Princes p_txt = (Princes)(cal.readFile("princes.txt"));
+		
+		
+		
+		JLabel Conversation_BG_M = new JLabel("");
+		Conversation_BG_M.setBounds(-222, 0, 1647, 761);
+		contentPane.add(Conversation_BG_M);
+		setScaledImage(Conversation_BG_M,"/controller/loginnsignup/gallery/Conversation_meeting.jpg");
+		Conversation_BG_M.setVisible(false);
+
+		JLabel BG = new JLabel("");
+		BG.setBounds(0, 0, 1264, 761);
+		contentPane.add(BG);
+		setScaledImage(BG,"/controller/loginnsignup/gallery/Conversation_BG.jpg");
+		
+		 // 按鈕選項(1)
+        JButton Choosen_1 = new JButton("好，在下即刻入內，與諸位共議討董大計。");
+        Choosen_1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                NPC.setVisible(false);
+                panel.setVisible(false);
+                panel_M.setVisible(true);
+                Conversation_BG_M.setVisible(true);
+                NPC_M.setVisible(true);
+            }
+        });
+        Choosen_1.setHorizontalAlignment(SwingConstants.LEFT);
+        Choosen_1.setForeground(new Color(255, 255, 255));
+        Choosen_1.setFont(new Font("新宋体", Font.BOLD, 20));
+        Choosen_1.setBackground(new Color(0, 0, 0));
+        Choosen_1.setBounds(367, 22, 787, 59);
+        panel.add(Choosen_1);
+        Choosen_1.setVisible(false);
+
+        // 按鈕選項(2)
+        JButton Choosen_2 = new JButton("在下還有要事在身，改日再聊，告辭！");
+        Choosen_2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OpenMV omv = new OpenMV();
+                omv.setVisible(true);
+                dispose();
+            }
+        });
+        Choosen_2.setHorizontalAlignment(SwingConstants.LEFT);
+        Choosen_2.setForeground(Color.WHITE);
+        Choosen_2.setFont(new Font("新宋体", Font.BOLD, 20));
+        Choosen_2.setBackground(Color.BLACK);
+        Choosen_2.setBounds(367, 80, 787, 59);
+        panel.add(Choosen_2);
+        Choosen_2.setVisible(false);
+        
+     // 按鈕選項(1)
+        JButton Choosen_1_M = new JButton("蒙袁盟主厚愛，在下當竭盡所能，略陳淺見，共商良策。");
+        Choosen_1_M.setBounds(367, 11, 787, 59);
+        panel_M.add(Choosen_1_M);
+        Choosen_1_M.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                NPC.setVisible(false);
+                panel.setVisible(false);
+                panel_M.setVisible(true);
+                Conversation_BG_M.setVisible(true);
+                NPC_M.setVisible(true);
+                Argue_1 ag1 = new Argue_1();
+                ag1.setVisible(true);
+                dispose();
+            }
+        });
+        Choosen_1_M.setHorizontalAlignment(SwingConstants.LEFT);
+        Choosen_1_M.setForeground(new Color(255, 255, 255));
+        Choosen_1_M.setFont(new Font("新宋体", Font.BOLD, 20));
+        Choosen_1_M.setBackground(new Color(0, 0, 0));
+        Choosen_1_M.setVisible(false);
+        
+        // 按鈕選項(2)
+        JButton Choosen_2_M = new JButton("袁盟主厚愛，初來乍到，尚未熟悉，恐妄言有失。似有不便之處，容在下告退...");
+        Choosen_2_M.setBounds(367, 69, 787, 59);
+        panel_M.add(Choosen_2_M);
+        Choosen_2_M.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                OpenMV omv = new OpenMV();
+                omv.setVisible(true);
+                dispose();
+            }
+        });
+        Choosen_2_M.setHorizontalAlignment(SwingConstants.LEFT);
+        Choosen_2_M.setForeground(Color.WHITE);
+        Choosen_2_M.setFont(new Font("新宋体", Font.BOLD, 20));
+        Choosen_2_M.setBackground(Color.BLACK);
+        Choosen_2_M.setVisible(false);
+        
+        
+        //文字對話互動
+        JLabel Conversation_M = new JLabel("");
+        Conversation_M.setForeground(new Color(255, 255, 255));
+        Conversation_M.setFont(new Font("新宋体", Font.BOLD, 20));
+        Conversation_M.setBounds(367, 35, 787, 93);
+        panel_M.add(Conversation_M);
+        
+        //按下按鈕後
+        Choosen_1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                NPC.setVisible(false);
+                panel.setVisible(false);
+                panel_M.setVisible(true);
+                Conversation_BG_M.setVisible(true);
+                NPC_M.setVisible(true);
+
+                // 開始文字動畫
+                TextAnimator animator1_M = new TextAnimator(Conversation_M, "昔桀、紂暴虐，諸侯共誅之。今卓淫刑重斂，殘賊天下，內有銷鑠禍，外有丘墟痛。" , 150, new Runnable() {
+                    @Override
+                    public void run() {
+                        TextAnimator animator2_M = new TextAnimator(Conversation_M, "又廢立幼主，禽生皇后，逼脅乘輿，劫持天子，百姓困弊，孰有如卓之甚者乎！", 150, new Runnable() {
+                            @Override
+                            public void run() {
+                                TextAnimator animator3_M = new TextAnimator(Conversation_M, "今關東諸侯，同盟一心...義兵并起，以討卓罪!", 150, new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        TextAnimator animator4_M = new TextAnimator(Conversation_M, "哦...? 這不是"+p_txt.getJ_Position() + p_txt.getJ_Name() +"嗎? " + p_txt.getJ_Position() + "遠道而來，辛苦了。",150, new Runnable() {
+                                        	@Override
+                                        	public void run() {
+                                                   TextAnimator animator5_M = new TextAnimator(Conversation_M, "袁某久仰" + p_txt.getJ_Position() +"威名，今日得見，實乃三生有幸。",150, new Runnable() {
+                                                	   @Override
+                                                	   public void run() {
+                                                		   TextAnimator animator6_M = new TextAnimator(Conversation_M, "當前討賊之事形勢複雜，還望" + p_txt.getJ_Position() + "將軍不吝賜教，提出見解和戰略，共商平亂大計。",150, new Runnable() {
+                                                        	   @Override
+                                                        	   public void run() {
+                                                        		   Choosen_1_M.setVisible(true);
+                                                        		   Choosen_2_M.setVisible(true);
+                                                        	   }
+                                                           	});animator6_M.start();
+                                                	   }
+                                                   	});animator5_M.start();
+                                        	}
+                                        });animator4_M.start();
+                                    }
+                                });
+                                animator3_M.start();
+                            }
+                        });
+                        animator2_M.start();
+                    }
+                });
+                animator1_M.start();
+            }
+        });
+        
+        
+		//文字對話互動
+		JLabel Conversation = new JLabel("");
+		Conversation.setForeground(new Color(255, 255, 255));
+		Conversation.setFont(new Font("新宋体", Font.BOLD, 20));
+		Conversation.setBounds(367, 35, 787, 93);
+		panel.add(Conversation);
+			
+		//第一段
+		 TextAnimator animator1 = new TextAnimator(Conversation, "原來是"+p_txt.getJ_Position()+p_txt.getJ_Name()+"，小人有眼不識泰山...久仰"+p_txt.getJ_Position()+"大名，如雷貫耳。", 150, new Runnable() {
+	            @Override
+	            public void run() {
+	                TextAnimator animator2 = new TextAnimator(Conversation, "卓專制朝政，殘賊天下，淫刑重歛，國不聊生。今四海同心，誅討凶逆，復興漢室。", 150, new Runnable() {
+	                    @Override
+	                    public void run() {
+	                        TextAnimator animator3 = new TextAnimator(Conversation, p_txt.getJ_Name()+"將軍，四方諸侯皆已齊聚堂前，共議天下大事。恭請"+p_txt.getJ_Position()+"入內，安坐議事之席。", 150, new Runnable() {
+	                            @Override
+	                            public void run() {
+	                            	Choosen_1.setVisible(true);
+	                                Choosen_2.setVisible(true);
+	                            }
+	                        });
+	                        animator3.start();
+	                    }
+	                });
+	                animator2.start();
+	            }
+	        });
+
+	        animator1.start();
+	    panel_M.setLayout(null);
+	    
+		
+	    JLabel 袁紹name = new JLabel("【袁紹】");
+	    袁紹name.setFont(new Font("新宋体", Font.BOLD, 25));
+	    袁紹name.setHorizontalAlignment(SwingConstants.LEFT);
+	    袁紹name.setForeground(new Color(255, 255, 255));
+	    袁紹name.setBounds(254, 11, 111, 35);
+		panel_M.add(袁紹name);
+		
+        
+	        
+		JLabel 田豐name = new JLabel("【田豐】");
+		田豐name.setFont(new Font("新宋体", Font.BOLD, 25));
+		田豐name.setHorizontalAlignment(SwingConstants.LEFT);
+		田豐name.setForeground(new Color(255, 255, 255));
+		田豐name.setBounds(254, 11, 111, 35);
+		panel.add(田豐name);
+		
+		}
+	
+		//任意調整圖片比例
+		private void setScaledImage(JLabel label, String imagePath) {
+		ImageIcon icon = new ImageIcon(this.getClass().getResource(imagePath));
+	 	Image image = icon.getImage();
+	 	Image scaledImage = image.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
+	 	label.setIcon(new ImageIcon(scaledImage));
+		}
+	}
+
+

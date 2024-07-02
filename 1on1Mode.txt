@@ -1,0 +1,383 @@
+package controller.game;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import controller.loginnsignup.LoginUI;
+import dao.Impl.GameSystemDaoImpl;
+import model.Princes;
+import util.cal;
+
+public class WarMode extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private Random rand = new Random();
+//    private JLabel Victory; 
+//    private JLabel Defeat;
+    
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    WarMode frame = new WarMode();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Create the frame.
+     */
+    public WarMode() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1280, 800);
+        setLocationRelativeTo(null);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+//		  //Victor Defeat 圖片
+//        Defeat = new JLabel("");
+//        Defeat.setHorizontalAlignment(SwingConstants.CENTER);
+//        Defeat.setBounds(0, 0, 1264, 761);
+//        contentPane.add(Defeat);
+//        setScaledImage(Defeat,"/controller/loginnsignup/gallery/Defeat.jpg");
+//        setVisible(false);
+//        
+//        Victory = new JLabel("");
+//        Victory.setHorizontalAlignment(SwingConstants.CENTER);
+//        Victory.setBounds(0, 0, 1264, 761);
+//        contentPane.add(Victory);
+//        setScaledImage(Victory,"/controller/loginnsignup/gallery/Victory.jpg");
+//        setVisible(false);
+        
+        Princes p_txt = (Princes)(cal.readFile("princes.txt"));
+        
+        // NPC頭像設置
+        JLabel NPC_P = new JLabel("");
+        NPC_P.setIcon(new ImageIcon(GamePreparation.class.getResource("/controller/loginnsignup/gallery/玩家.png")));
+        NPC_P.setHorizontalAlignment(SwingConstants.CENTER);
+        NPC_P.setBounds(10, 11, 403, 530);
+        contentPane.add(NPC_P);
+
+        ImageIcon imageIcon_P = new ImageIcon(LoginUI.class.getResource("/controller/loginnsignup/gallery/玩家.png"));
+        int originalWidth_P = imageIcon_P.getIconWidth();
+        int originalHeight_P = imageIcon_P.getIconHeight();
+        double scaleFactor_P = Math.min(1.0 * NPC_P.getWidth() / originalWidth_P, 1.0 * NPC_P.getHeight() / originalHeight_P);
+        int scaledWidth_P = (int) (originalWidth_P * scaleFactor_P);
+        int scaledHeight_P = (int) (originalHeight_P * scaleFactor_P);
+        Image scaledImage_P = imageIcon_P.getImage().getScaledInstance(scaledWidth_P, scaledHeight_P, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon_P = new ImageIcon(scaledImage_P);
+        NPC_P.setIcon(scaledIcon_P);
+
+        JLabel NPC_E = new JLabel("");
+        NPC_E.setIcon(new ImageIcon(GamePreparation.class.getResource("/controller/loginnsignup/gallery/呂布.png")));
+        NPC_E.setHorizontalAlignment(SwingConstants.CENTER);
+        NPC_E.setBounds(851, 11, 403, 530);
+
+        ImageIcon imageIcon_E = new ImageIcon(LoginUI.class.getResource("/controller/loginnsignup/gallery/呂布.png"));
+        int originalWidth_E = imageIcon_E.getIconWidth();
+        int originalHeight_E = imageIcon_E.getIconHeight();
+        double scaleFactor_E = Math.min(1.0 * NPC_E.getWidth() / originalWidth_E, 1.0 * NPC_E.getHeight() / originalHeight_E);
+        int scaledWidth_E = (int) (originalWidth_E * scaleFactor_E);
+        int scaledHeight_E = (int) (originalHeight_E * scaleFactor_E);
+        Image scaledImage_E = imageIcon_E.getImage().getScaledInstance(scaledWidth_E, scaledHeight_E, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon_E = new ImageIcon(scaledImage_E);
+        NPC_E.setIcon(scaledIcon_E);
+        contentPane.add(NPC_E);
+
+        JLabel PK = new JLabel("");
+        PK.setHorizontalAlignment(SwingConstants.CENTER);
+        PK.setBounds(371, 91, 531, 411);
+        contentPane.add(PK);
+        setScaledImage(PK, "/controller/loginnsignup/gallery/PK.png");
+
+        JPanel panel_P = new JPanel();
+        panel_P.setBounds(10, 11, 403, 739);
+        panel_P.setBackground(new Color(0, 0, 0, 128)); // 設置黑色半透明
+        contentPane.add(panel_P);
+        panel_P.setLayout(null);
+
+        JLabel P_Position = new JLabel("【" + p_txt.getJ_Position() + "】");
+        P_Position.setBounds(0, 533, 403, 65);
+        panel_P.add(P_Position);
+        P_Position.setForeground(new Color(255, 255, 255));
+        P_Position.setFont(new Font("標楷體", Font.BOLD, 25));
+        P_Position.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel P_Name = new JLabel(p_txt.getJ_Name());
+        P_Name.setBounds(0, 600, 403, 65);
+        panel_P.add(P_Name);
+        P_Name.setForeground(new Color(255, 255, 255));
+        P_Name.setFont(new Font("標楷體", Font.BOLD, 50));
+        P_Name.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        JPanel panel_N = new JPanel();
+        panel_N.setBounds(851, 11, 403, 739);
+        panel_N.setBackground(new Color(0, 0, 0, 128)); // 設置黑色半透明
+        contentPane.add(panel_N);
+        panel_N.setLayout(null);
+        
+        JPanel panel_BG = new JPanel();
+        panel_BG.setBackground(new Color(0, 0, 0, 128));
+        panel_BG.setBounds(0, 0, 1264, 761);
+        contentPane.add(panel_BG);
+        panel_BG.setLayout(null);
+        
+        // 按鈕設置
+        JButton btn斬 = new JButton("斬");
+        btn斬.setForeground(new Color(255, 255, 255));
+        btn斬.setBackground(new Color(0, 0, 0));
+        btn斬.setFont(new Font("標楷體", Font.BOLD, 35));
+        btn斬.setBounds(433, 680, 70, 70);
+        panel_BG.add(btn斬);
+        
+        JButton btn擋 = new JButton("擋");
+        btn擋.setForeground(Color.WHITE);
+        btn擋.setFont(new Font("標楷體", Font.BOLD, 35));
+        btn擋.setBackground(new Color(0, 0, 0));
+        btn擋.setBounds(601, 680, 70, 70);
+        panel_BG.add(btn擋);
+        
+        JButton btn破 = new JButton("破");
+        btn破.setForeground(Color.WHITE);
+        btn破.setFont(new Font("標楷體", Font.BOLD, 35));
+        btn破.setBackground(new Color(0, 0, 0));
+        btn破.setBounds(762, 680, 70, 70);
+        panel_BG.add(btn破);
+        
+        // 添加血量面板(玩家)
+        HealthPanel healthPanel = new HealthPanel();
+        healthPanel.setBounds(43, 688, 320, 40);
+        panel_P.add(healthPanel);
+        healthPanel.setBackground(new Color(0, 0, 0));
+
+        // 添加血量面板(呂布)
+        HealthPanel_L healthPanel_L = new HealthPanel_L();
+        healthPanel_L.setBounds(43, 688, 320, 40);
+        panel_N.add(healthPanel_L);
+        healthPanel_L.setBackground(new Color(0, 0, 0));
+
+        // 添加按鈕監聽器
+        btn斬.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                handleAttack("斬", healthPanel, healthPanel_L);
+            }
+        });
+
+        btn擋.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                handleAttack("擋", healthPanel, healthPanel_L);
+            }
+        });
+
+        btn破.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                handleAttack("破", healthPanel, healthPanel_L);
+            }
+        });
+
+        JLabel N_Position = new JLabel("【溫侯】");
+        N_Position.setBounds(0, 533, 403, 65);
+        panel_N.add(N_Position);
+        N_Position.setForeground(new Color(255, 255, 255));
+        N_Position.setFont(new Font("標楷體", Font.BOLD, 25));
+        N_Position.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel N_Name = new JLabel("呂布");
+        N_Name.setBounds(0, 600, 403, 65);
+        panel_N.add(N_Name);
+        N_Name.setFont(new Font("標楷體", Font.BOLD, 50));
+        N_Name.setForeground(new Color(255, 255, 255));
+        N_Name.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        JLabel BG = new JLabel("");
+        BG.setHorizontalAlignment(SwingConstants.CENTER);
+        BG.setBounds(0, 0, 1264, 763);
+        contentPane.add(BG);
+        setScaledImage(BG,"/controller/loginnsignup/gallery/WarModeBG.jpg");
+        
+        
+    }
+
+    
+
+    // 處理攻擊邏輯
+    private void handleAttack(String action, HealthPanel healthPanel, HealthPanel_L healthPanel_L) {
+    	Integer N1 = (Integer)(cal.readFile("N1.txt"));
+    	Integer N2 = (Integer)(cal.readFile("N2.txt"));
+    	Integer N3 = (Integer)(cal.readFile("N3.txt"));
+    	Integer N4 = (Integer)(cal.readFile("N4.txt"));
+    	Integer N5 = (Integer)(cal.readFile("N5.txt"));
+    	Integer N6 = (Integer)(cal.readFile("N6.txt"));
+    	Integer N7 = (Integer)(cal.readFile("N7.txt"));
+    	Integer N8 = (Integer)(cal.readFile("N8.txt"));
+    	Integer N9 = (Integer)(cal.readFile("N9.txt"));
+    	Integer N10 = (Integer)(cal.readFile("N10.txt"));
+    	
+    	int Score = N1 + N2 + N3 + N4 + N5 + N6 + N7 + N8 + N9 + N10;
+    	
+    	Princes p_txt = (Princes)(cal.readFile("princes.txt"));
+    	
+    	int L = rand.nextInt(3) + 1;
+        int P = rand.nextInt(3) + 1;
+        
+        if ("斬".equals(action)) {
+            if (P > L) {
+                healthPanel.setHealth(healthPanel.getHealth() - 20);
+            } else if (P == L && healthPanel.getHealth() < 291 && healthPanel_L.getHealth_L() < 291) {
+                healthPanel.setHealth(healthPanel.getHealth() - 10);
+                healthPanel_L.setHealth_L(healthPanel_L.getHealth_L() - 5);
+            } else {
+            	healthPanel_L.setHealth_L(healthPanel_L.getHealth_L() - 15 - (Score / 10));
+            }
+            
+            if(healthPanel.getHealth() < 1) {
+//            	Defeat.setVisible(true);
+            	new GameSystemDaoImpl().addGameSystem_exam(p_txt.getJ_Position(), p_txt.getJ_Name(), N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, Score, "Defeat");
+            	Defeat df = new Defeat();
+            	df.setVisible(true);
+            	dispose();
+            }
+            else if(healthPanel_L.getHealth_L() < 1){
+//            	Victory.setVisible(true);
+            	new GameSystemDaoImpl().addGameSystem_exam(p_txt.getJ_Position(), p_txt.getJ_Name(), N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, Score, "Victory");
+            	Victory vt = new Victory();
+            	vt.setVisible(true);
+            	dispose();
+            }
+            
+        } else if ("擋".equals(action)) {
+            if (P > L ) {
+                healthPanel.setHealth(healthPanel.getHealth() - 20);
+            } else if (P == L && healthPanel.getHealth() < 291 && healthPanel_L.getHealth_L() < 291) {
+                healthPanel.setHealth(healthPanel.getHealth() - 10);
+                healthPanel_L.setHealth_L(healthPanel_L.getHealth_L() - 5 - (Score / 10));
+            } else {
+            	healthPanel_L.setHealth_L(healthPanel_L.getHealth_L() - 15 - (Score / 10));
+            }
+            
+            if(healthPanel.getHealth() < 1) {
+//            	Defeat.setVisible(true);
+            	new GameSystemDaoImpl().addGameSystem_exam(p_txt.getJ_Position(), p_txt.getJ_Name(), N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, Score, "Defeat");
+            	Defeat df = new Defeat();
+            	df.setVisible(true);
+            	dispose();
+            }
+            else if(healthPanel_L.getHealth_L() < 1){
+//            	Victory.setVisible(true);
+            	new GameSystemDaoImpl().addGameSystem_exam(p_txt.getJ_Position(), p_txt.getJ_Name(), N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, Score, "Victory");
+            	Victory vt = new Victory();
+            	vt.setVisible(true);
+            	dispose();
+            }
+            
+        } else if ("破".equals(action)) {
+            if (P > L) {
+                healthPanel.setHealth(healthPanel.getHealth() - 20);
+            } else if (P == L && healthPanel.getHealth() < 291 && healthPanel_L.getHealth_L() < 291) {
+                healthPanel.setHealth(healthPanel.getHealth() - 10);
+                healthPanel_L.setHealth_L(healthPanel_L.getHealth_L() - 5);
+            } else {
+                healthPanel_L.setHealth_L(healthPanel_L.getHealth_L() - 15 - (Score / 10));
+            }
+            
+            if(healthPanel.getHealth() < 1) {
+//            	Defeat.setVisible(true);
+            	new GameSystemDaoImpl().addGameSystem_exam(p_txt.getJ_Position(), p_txt.getJ_Name(), N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, Score, "Defeat");
+            	Defeat df = new Defeat();
+            	df.setVisible(true);
+            	dispose();
+            }
+            else if(healthPanel_L.getHealth_L() < 1){
+//            	Victory.setVisible(true);
+            	new GameSystemDaoImpl().addGameSystem_exam(p_txt.getJ_Position(), p_txt.getJ_Name(), N1, N2, N3, N4, N5, N6, N7, N8, N9, N10, Score, "Victory");
+            	Victory vt = new Victory();
+            	vt.setVisible(true);
+            	dispose();
+            }
+        }
+    }
+
+    // 玩家血量面板類
+    class HealthPanel extends JPanel {
+        private int health = 125; // 初始血量
+
+        public int getHealth() {
+            return health;
+        }
+
+        // 設定血量並重新繪製
+        public void setHealth(int health) {
+            this.health = health;
+            repaint(); // 重新繪製面板，觸發 paintComponent 方法
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g); // 確保父類繪製的內容不被覆蓋
+            g.setColor(Color.RED); // 設置顏色為紅色
+            g.fillRect(10, 10, health * 2, 20); // 繪製紅色矩形，表示血條，寬度為健康值的兩倍
+            g.setColor(Color.BLACK); // 設置顏色為黑色
+            g.drawRect(10, 10, 300, 20); // 繪製黑色邊框，固定寬度為 200 像素
+        }
+    }
+
+    // 呂布血量面板類
+    class HealthPanel_L extends JPanel {
+        private int health_L = 125; // 初始血量
+
+        public int getHealth_L() {
+            return health_L;
+        }
+
+        // 設定血量並重新繪製
+        public void setHealth_L(int health_L) {
+            this.health_L = health_L;
+            repaint(); // 重新繪製面板，觸發 paintComponent 方法
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g); // 確保父類繪製的內容不被覆蓋
+            g.setColor(Color.RED); // 設置顏色為紅色
+            g.fillRect(10, 10, health_L * 2, 20); // 繪製紅色矩形，表示血條，寬度為健康值的兩倍
+            g.setColor(Color.BLACK); // 設置顏色為黑色
+            g.drawRect(10, 10, 300, 20); // 繪製黑色邊框，固定寬度為 200 像素
+        }
+    }
+	
+	//設置圖片縮放
+	private void setScaledImage(JLabel label, String path) {
+    ImageIcon icon = new ImageIcon(getClass().getResource(path));
+    Image img = icon.getImage();
+    Image scaledImg = img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
+    label.setIcon(new ImageIcon(scaledImg));
+}
+    
+}
